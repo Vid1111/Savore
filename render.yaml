@@ -1,0 +1,17 @@
+# Render "Blueprint": tells Render how to run the Savoré backend. See backend/DEPLOY.md.
+services:
+  - type: web
+    name: savore-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DATABASE_URL # paste your Supabase "Session pooler" connection string in Render
+        sync: false
+      - key: REVIEWER_KEY # password for the team's review screen: Render makes one for you
+        generateValue: true
