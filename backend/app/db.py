@@ -12,11 +12,16 @@ from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./savore.db")
 
-# Hosts hand out "postgres://..." or "postgresql://..." URLs. Name the driver we install (psycopg2)
-# so any of them works.
-for prefix in ("postgres://", "postgresql://"):
-    if DATABASE_URL.startswith(prefix):
-        DATABASE_URL = "postgresql+psycopg2://" + DATABASE_URL[len(prefix):]
+def normalize_url(url: str) -> str:
+    """Hosts hand out "postgres://..." or "postgresql://..." URLs. Name the driver we install
+    (psycopg2) so any of them works."""
+    for prefix in ("postgres://", "postgresql://"):
+        if url.startswith(prefix):
+            return "postgresql+psycopg2://" + url[len(prefix):]
+    return url
+
+
+DATABASE_URL = normalize_url(DATABASE_URL)
 
 connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
 # pool_pre_ping: reconnect quietly if the hosted database closed an idle connection.

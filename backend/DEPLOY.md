@@ -35,6 +35,18 @@ $env:DATABASE_URL = "PASTE-THE-CONNECTION-STRING-HERE"
   `--start-page N` (it prints N at the end). Products already added are skipped.
 - Check it worked: Supabase → **Table Editor** → `products`.
 
+**Faster alternative:** if your local `savore.db` already has products, copy it instead (takes seconds; it
+refuses to touch a database that already has products):
+
+```powershell
+$env:DATABASE_URL = "PASTE-THE-CONNECTION-STRING-HERE"
+.venv\Scripts\python -m scripts.copy_db
+```
+
+**Then lock the tables:** in Supabase → **SQL Editor**, run `ALTER TABLE public.<name> ENABLE ROW LEVEL SECURITY;`
+for each table (or let Claude do it). Our server connects as the table owner, so it keeps working, and nobody can
+read or edit the data through Supabase's public API.
+
 ## 3. Put the code on GitHub
 
 Install Git if needed, create an empty repository on github.com (private is fine), then in the project
@@ -53,6 +65,8 @@ git push -u origin main
 
 ## 4. Run the API on Render
 
+0. If your repository is **private**, Render must be allowed to read it first: Render → your name (top right) →
+   **Account Settings** → **GitHub** → connect, and give it access to the `Savore` repository.
 1. Sign up at **render.com** → **New +** → **Blueprint** → connect GitHub → pick your repository.
    Render reads `render.yaml` and proposes a web service called `savore-api`.
 2. It asks for **DATABASE_URL**: paste the Supabase connection string from step 1.
