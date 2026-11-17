@@ -6,10 +6,11 @@ import 'package:http/http.dart' as http;
 
 import 'models.dart';
 
-/// Where the backend lives. Change it without editing code:
-///   flutter run --dart-define=API_URL=https://your-app.onrender.com
-/// Default works with:  adb reverse tcp:8000 tcp:8000  (phone) or a desktop/emulator on the same PC.
-const apiUrl = String.fromEnvironment('API_URL', defaultValue: 'http://127.0.0.1:8000');
+/// Where the backend lives: the deployed server (Render + Supabase) by default.
+/// To use a server on your own PC instead, without editing code:
+///   adb reverse tcp:8000 tcp:8000
+///   flutter run --dart-define=API_URL=http://127.0.0.1:8000
+const apiUrl = String.fromEnvironment('API_URL', defaultValue: 'https://savore-api.onrender.com');
 
 /// Something went wrong talking to the server. [message] is safe to show to the user.
 class ApiException implements Exception {

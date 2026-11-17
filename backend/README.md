@@ -73,13 +73,12 @@ root is the Render setup file.
 
 ## Connect the Flutter app
 
-The app reads its server address from `API_URL` (default `http://127.0.0.1:8000`).
+The app talks to the **deployed server** (`https://savore-api.onrender.com`) by default, so `flutter run` just works.
+To use a server on your own PC instead, set `API_URL`:
 
-- **Phone with USB cable** (easiest): start the backend, then link the phone to the PC's port 8000 and run the app:
-  `adb reverse tcp:8000 tcp:8000` then `flutter run`
+- **Phone with USB cable:** `adb reverse tcp:8000 tcp:8000` then `flutter run --dart-define=API_URL=http://127.0.0.1:8000`
 - **Phone on the same Wi-Fi:** `flutter run --dart-define=API_URL=http://YOUR-PC-IP:8000`
 - **Android emulator:** `flutter run --dart-define=API_URL=http://10.0.2.2:8000`
-- **Deployed backend:** `flutter run --dart-define=API_URL=https://your-app.onrender.com`
 
 ## PostgreSQL
 
